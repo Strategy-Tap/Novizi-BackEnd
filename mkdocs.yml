@@ -1,0 +1,50 @@
+site_name: Novizi
+site_url: https://novizi.com
+site_author: Strategy Tap
+site_description: >-
+  event management and ticketing service. Allows users to browse, create, and promote local events.
+
+repo_name: Strategy-Tap/novizi
+repo_url: https://github.com/Strategy-Tap/novizi/
+edit_uri: ''
+
+copyright: Copyright &copy; 2020 Strategy Tap
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github-alt
+  features:
+    - tabs
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      type: timeago
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+      watch:
+        - novizi
+
+nav:
+ - Home: 'index.md'
+
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      linenums: true
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+          - name: mermaid
+            class: mermaid
+            format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed
