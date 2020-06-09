@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 homepage = "novizi.com"
 documentation = ""
-repository = "https://github.com/Strategy-Tap/novizi/"
+repository = "https://github.com/Strategy-Tap/Novizi-BackEnd"
 keywords = ["novizi"]
 
 [tool.poetry.dependencies]

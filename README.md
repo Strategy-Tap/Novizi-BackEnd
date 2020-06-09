@@ -14,7 +14,7 @@ event management and ticketing service. Allows users to browse, create, and prom
 
 ```shell tab="Shell or CMD"
 
-git clone https://github.com/Strategy-Tap/novizi
+git clone https://github.com/Strategy-Tap/Novizi-BackEnd
 ```
 
 * install dependence:
@@ -57,4 +57,4 @@ enjoy :)
 # License: MIT
 
 
-[Novizi]: https://github.com/Strategy-Tap/novizi
+[Novizi]: https://github.com/Strategy-Tap/Novizi-BackEnd

@@ -49,4 +49,4 @@ enjoy :)
 # License: MIT
 
 
-[Novizi]: https://github.com/Strategy-Tap/novizi
+[Novizi]: https://github.com/Strategy-Tap/Novizi-BackEnd
