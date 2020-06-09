@@ -32,6 +32,7 @@ urlpatterns = i18n_patterns(
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain",),
     ),
     path("api/users/", include("users.urls")),
+    path("api/events/", include("events.urls")),
     re_path(
         r"^docs(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),

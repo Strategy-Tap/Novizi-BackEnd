@@ -273,5 +273,5 @@ def event_creator(sender: Event, instance: Event, **kwargs: Any) -> None:
     if not instance.slug:
         instance.slug = unique_slug(title=instance.title)
 
-    if not instance.description:
+    if instance.description:
         instance.read_time = get_read_time(words=instance.description)
