@@ -1,6 +1,7 @@
 """Django base settings for Novizi project."""
 import pathlib
 from datetime import timedelta
+from typing import List
 
 from decouple import Csv, config
 from dj_database_url import parse as db_url
@@ -59,7 +60,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
 ]
 
-LOCAL_APPS = ["users.apps.UsersConfig"]
+LOCAL_APPS = ["users.apps.UsersConfig", "events.apps.EventsConfig"]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -102,12 +103,11 @@ LOGIN_URL = "/"
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
 PASSWORD_HASHERS = [
-# https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django  # noqa: B950
+    # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django  # noqa: B950
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-
 ]
 
 
@@ -357,4 +357,4 @@ else:
 
     ENVIRONMENT_COLOR = "green"
 
-CUSTOM_RESERVED_NAMES = []
+CUSTOM_RESERVED_NAMES: List[str] = []

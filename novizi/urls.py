@@ -9,15 +9,16 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Novizi API",
-      default_version='v1',
-      description="event management and ticketing service. Allows users to browse, create, and promote local events.",
-      contact=openapi.Contact(email="strategy-tap@example.com"),
-      license=openapi.License(name="MIT License"),
-   ),
-   public=False,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Novizi API",
+        default_version="v1",
+        description="event management and ticketing service. Allows users to browse,"
+        " create, and promote local events.",
+        contact=openapi.Contact(email="strategy-tap@example.com"),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=False,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = i18n_patterns(
@@ -42,7 +43,7 @@ urlpatterns = i18n_patterns(
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    prefix_default_language=False
+    prefix_default_language=False,
 )
 
 if settings.DEBUG:
