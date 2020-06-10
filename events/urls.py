@@ -4,6 +4,8 @@ from django.urls import path
 from .views import (
     EventListCreateAPIView,
     EventRetrieveUpdateDestroyAPIView,
+    ProposerListCreateAPIView,
+    ProposerRetrieveUpdateDestroyAPIView,
     list_of_tag,
     sign_up_to_event,
 )
@@ -14,5 +16,10 @@ urlpatterns = [
     path("tags/", list_of_tag),
     path("", EventListCreateAPIView.as_view()),
     path("<slug>/signup/", sign_up_to_event),
+    path("<event_slug>/proposers/", ProposerListCreateAPIView.as_view()),
+    path(
+        "<event_slug>/proposers/<slug>/",
+        ProposerRetrieveUpdateDestroyAPIView.as_view(),
+    ),
     path("<slug>/", EventRetrieveUpdateDestroyAPIView.as_view()),
 ]

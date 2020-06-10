@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from . import filter
 from . import permissions as custom_permissions
 from . import serializers
-from .models import Attendee, Event, Tag
+from .models import Attendee, Event, Session, Tag
 
 
 @api_view(["GET"])
@@ -134,3 +134,47 @@ class EventRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             }
         )
         return Response(data, status=status.HTTP_200_OK)
+
+
+class ProposerListCreateAPIView(generics.ListCreateAPIView):
+    """Proposer API view for create and list."""
+
+    queryset = Session.objects.filter(status="Draft")
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filter_backends = (OrderingFilter, SearchFilter)
+
+    search_fields = ("title", "description")
+    ordering = ("title",)
+
+    ordering_fields = ("title", "session_type")
+
+    def get_serializer_class(
+        self: "ProposerListCreateAPIView", *args: Tuple, **kwargs: Any
+    ) -> Any:
+        """Return the class to use for the serializer."""
+        if self.request.method == "POST":
+
+            return serializers.SessionRetrieveCreateUpdateSerializer
+
+        else:
+            return serializers.SessionListSerializer
+
+    def perform_create(self: "ProposerListCreateAPIView", serializer: Any) -> None:
+        """Method called when the create method called."""
+        event = get_object_or_404(Event, slug=self.kwargs.get("slug"))
+        serializer.save(proposed_by=self.request.user, events=event)
+
+
+class ProposerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """Proposer API view for retrieve, update, and delete."""
+
+    queryset = Session.objects.all()
+    serializer_class = serializers.SessionRetrieveCreateUpdateSerializer
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        custom_permissions.IsProposerOrReadOnly,
+    )
+
+    lookup_field = "slug"

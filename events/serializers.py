@@ -1,7 +1,7 @@
 """Collection of serializers."""
 from rest_framework import serializers
 
-from .models import Event, Tag
+from .models import Event, Session, Tag
 
 
 class ProfileSerializer(serializers.Serializer):
@@ -114,3 +114,28 @@ class EventCreateUpdateSerializer(serializers.ModelSerializer):
 
         model = Event
         fields = ("title", "description", "cover", "total_guest", "event_date", "tags")
+
+
+class SessionRetrieveCreateUpdateSerializer(serializers.ModelSerializer):
+    """Session Retrieve Create Update Serializer."""
+
+    status = serializers.CharField(read_only=True)
+    proposed_by = ProfileSerializer(read_only=True)
+
+    class Meta:
+        """Meta data."""
+
+        model = Session
+        fields = ("title", "description", "session_type", "status", "proposed_by")
+
+
+class SessionListSerializer(serializers.Serializer):
+    """Session List Serializer."""
+
+    title = serializers.CharField(read_only=True)
+
+    session_type = serializers.CharField(read_only=True)
+
+    slug = serializers.SlugField(read_only=True)
+
+    proposed_by = ProfileSerializer(read_only=True)
