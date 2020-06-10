@@ -170,7 +170,7 @@ class ProposerListCreateAPIView(generics.ListCreateAPIView):
 class ProposerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     """Proposer API view for retrieve, update, and delete."""
 
-    queryset = Session.objects.all()
+    queryset = Session.objects.filter(status="Draft")
     serializer_class = serializers.SessionRetrieveCreateUpdateSerializer
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
