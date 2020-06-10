@@ -163,7 +163,7 @@ class ProposerListCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self: "ProposerListCreateAPIView", serializer: Any) -> None:
         """Method called when the create method called."""
-        event = get_object_or_404(Event, slug=self.kwargs.get("slug"))
+        event = get_object_or_404(Event, slug=self.kwargs.get("event_slug"))
         serializer.save(proposed_by=self.request.user, events=event)
 
 
