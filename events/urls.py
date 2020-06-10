@@ -1,16 +1,18 @@
 """Events URL Configuration."""
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
-from .views import EventsViewSet, list_of_tag
-
-router = DefaultRouter()
-
-router.register("", EventsViewSet)
+from .views import (
+    EventListCreateAPIView,
+    EventRetrieveUpdateDestroyAPIView,
+    list_of_tag,
+    sign_up_to_event,
+)
 
 app_name = "events"
 
 urlpatterns = [
     path("tags/", list_of_tag),
-    path("", include(router.urls)),
+    path("", EventListCreateAPIView.as_view()),
+    path("<slug>/signup/", sign_up_to_event),
+    path("<slug>/", EventRetrieveUpdateDestroyAPIView.as_view()),
 ]
