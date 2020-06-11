@@ -12,6 +12,18 @@ class ProfileSerializer(serializers.Serializer):
     picture = serializers.ImageField(read_only=True)
 
 
+class AttendeeSerializer(serializers.Serializer):
+    """Serializer For attendees."""
+
+    user = ProfileSerializer(read_only=True)
+
+
+class SpeakerSerializer(serializers.Serializer):
+    """Serializer For attendees."""
+
+    proposed_by = ProfileSerializer(read_only=True)
+
+
 class TagSerializer(serializers.Serializer):
     """Tag serializer."""
 

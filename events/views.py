@@ -255,3 +255,21 @@ class DeniedSessionRetrieveAPIView(generics.RetrieveAPIView):
         return Session.objects.filter(status="Denied").filter(
             events__slug=self.kwargs.get("event_slug")
         )
+
+
+@api_view(["GET"])
+def attendee_list(request: Request, event_slug: str) -> Response:
+    """Get list of attendee in the event."""
+    event = get_object_or_404(Event, slug=event_slug)
+    attendees = event.attendees.all()
+    serializer = serializers.AttendeeSerializer(attendees, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def speakers_list(request: Request, event_slug: str) -> Response:
+    """Get list of speaker in the event."""
+    event = get_object_or_404(Event, slug=event_slug)
+    sessions = event.sessions.filter(status="Accepted")
+    serializer = serializers.SpeakerSerializer(sessions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
