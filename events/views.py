@@ -139,8 +139,6 @@ class EventRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ProposerListCreateAPIView(generics.ListCreateAPIView):
     """Proposer API view for create and list."""
 
-    queryset = Session.objects.filter(status="Draft")
-
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     filter_backends = (OrderingFilter, SearchFilter)
@@ -149,6 +147,9 @@ class ProposerListCreateAPIView(generics.ListCreateAPIView):
     ordering = ("title",)
 
     ordering_fields = ("title", "session_type")
+
+    def get_queryset(self):
+        return Session.objects.filter(status="Draft").filter(events__slug=self.kwargs.get("event_slug"))
 
     def get_serializer_class(
         self: "ProposerListCreateAPIView", *args: Tuple, **kwargs: Any
@@ -170,7 +171,6 @@ class ProposerListCreateAPIView(generics.ListCreateAPIView):
 class ProposerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     """Proposer API view for retrieve, update, and delete."""
 
-    queryset = Session.objects.filter(status="Draft")
     serializer_class = serializers.SessionRetrieveCreateUpdateSerializer
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
@@ -178,3 +178,6 @@ class ProposerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     )
 
     lookup_field = "slug"
+
+    def get_queryset(self):
+        return Session.objects.filter(status="Draft").filter(events__slug=self.kwargs.get("event_slug"))
