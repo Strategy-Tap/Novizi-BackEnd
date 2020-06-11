@@ -1,5 +1,5 @@
 """Collection views."""
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
@@ -148,8 +148,11 @@ class ProposerListCreateAPIView(generics.ListCreateAPIView):
 
     ordering_fields = ("title", "session_type")
 
-    def get_queryset(self):
-        return Session.objects.filter(status="Draft").filter(events__slug=self.kwargs.get("event_slug"))
+    def get_queryset(self: "ProposerListCreateAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Draft").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
 
     def get_serializer_class(
         self: "ProposerListCreateAPIView", *args: Tuple, **kwargs: Any
@@ -179,5 +182,76 @@ class ProposerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
 
     lookup_field = "slug"
 
-    def get_queryset(self):
-        return Session.objects.filter(status="Draft").filter(events__slug=self.kwargs.get("event_slug"))
+    def get_queryset(self: "ProposerRetrieveUpdateDestroyAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Draft").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
+
+
+class SessionListAPIView(generics.ListAPIView):
+    """Session API view for accepted session list."""
+
+    serializer_class = serializers.SessionListSerializer
+
+    filter_backends = (OrderingFilter, SearchFilter)
+
+    search_fields = ("title", "description")
+
+    ordering = ("title",)
+
+    ordering_fields = ("title", "session_type")
+
+    def get_queryset(self: "SessionListAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Accepted").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
+
+
+class SessionRetrieveAPIView(generics.RetrieveAPIView):
+    """Session API view for accepted session retrieve."""
+
+    serializer_class = serializers.SessionRetrieveCreateUpdateSerializer
+
+    lookup_field = "slug"
+
+    def get_queryset(self: "SessionRetrieveAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Accepted").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
+
+
+class DeniedSessionListAPIView(generics.ListAPIView):
+    """Session API view for denied session list."""
+
+    serializer_class = serializers.SessionListSerializer
+
+    filter_backends = (OrderingFilter, SearchFilter)
+
+    search_fields = ("title", "description")
+
+    ordering = ("title",)
+
+    ordering_fields = ("title", "session_type")
+
+    def get_queryset(self: "DeniedSessionListAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Denied").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
+
+
+class DeniedSessionRetrieveAPIView(generics.RetrieveAPIView):
+    """Session API view for denied session retrieve."""
+
+    serializer_class = serializers.SessionRetrieveCreateUpdateSerializer
+
+    lookup_field = "slug"
+
+    def get_queryset(self: "DeniedSessionRetrieveAPIView") -> List[Session]:
+        """Override get_queryset."""
+        return Session.objects.filter(status="Denied").filter(
+            events__slug=self.kwargs.get("event_slug")
+        )
