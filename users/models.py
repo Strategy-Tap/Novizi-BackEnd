@@ -36,6 +36,8 @@ class CustomUser(AbstractUser):
         upload_to=user_upload_to,
     )
 
+    phone_number = models.CharField(verbose_name=_("phone number"), max_length=17)
+
     class Meta:
         """Meta data."""
 

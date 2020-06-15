@@ -7,7 +7,8 @@ Content-Type: application/json
   "email": "stringzzzzzzz@example.com",
   "password1": "1234567899mnm",
   "password2": "1234567899mnm",
-  "full_name": "stringzzzzzzz"
+  "full_name": "stringzzzzzzz",
+  "phone_number": "1234567899"
 }
 
 > {% function res() {
