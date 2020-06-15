@@ -37,6 +37,11 @@ def sign_up_to_event(request: Request, slug: str) -> Response:
         raise exceptions.APIException(
             f"You already attended the {event.title}.", code=status.HTTP_400_BAD_REQUEST
         )
+    if event.event_date < timezone.now():
+        raise exceptions.APIException(
+            "The registrations time is finished.", code=status.HTTP_400_BAD_REQUEST
+        )
+
     Attendee(user=request.user, events=event).save()
     return Response(status=status.HTTP_201_CREATED)
 
@@ -131,6 +136,8 @@ class EventRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             {
                 "event_is_open": event.event_date > timezone.now(),
                 "is_authenticated": request.user.is_authenticated,
+                "is_stuff": event.hosted_by == request.user
+                or event.organizers.filter(username=request.user).first() is not None,
             }
         )
         return Response(data, status=status.HTTP_200_OK)
