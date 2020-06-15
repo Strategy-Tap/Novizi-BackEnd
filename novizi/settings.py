@@ -58,6 +58,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth.registration",
     "dj_rest_auth",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 LOCAL_APPS = ["users.apps.UsersConfig", "events.apps.EventsConfig"]
@@ -342,6 +343,8 @@ ACCOUNT_ADAPTER = "users.adapter.CustomAccountAdapter"
 OLD_PASSWORD_FIELD_ENABLED = True
 
 LOGOUT_ON_PASSWORD_CHANGE = True
+
+JWT_AUTH_COOKIE = 'JWT_AUTH_COOKIE'
 
 # Your settings...
 # ------------------------------------------------------------------------------
