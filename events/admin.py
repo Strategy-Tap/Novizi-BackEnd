@@ -5,6 +5,7 @@ from django.db.models import QuerySet
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
 from import_export.fields import Field
+from leaflet.admin import LeafletGeoAdminMixin
 
 from .forms import AttendeeAdminForm
 from .models import Attendee, Event, Session, Tag
@@ -178,7 +179,7 @@ class AttendeeAdmin(ImportExportActionModelAdmin):
 
 
 @admin.register(Event)
-class EventAdmin(ImportExportActionModelAdmin):
+class EventAdmin(LeafletGeoAdminMixin, ImportExportActionModelAdmin):
     """Configure the event model in admin page."""
 
     resource_class = EventResource

@@ -1,7 +1,16 @@
 """Collection of serializers."""
-from rest_framework import serializers
+from typing import Dict
+
+from pydantic import BaseModel
+from rest_framework import exceptions, serializers
 
 from .models import Event, Session, Tag
+
+
+class GeoLocation(BaseModel):
+    """Pydantic model for Geo location."""
+
+    geom: Dict
 
 
 class ProfileSerializer(serializers.Serializer):
@@ -113,6 +122,8 @@ class EventRetrieveSerializer(serializers.Serializer):
 
     total_workshop = serializers.IntegerField(read_only=True)
 
+    geom = serializers.JSONField(read_only=True)
+
 
 class EventCreateUpdateSerializer(serializers.ModelSerializer):
     """Event Create Update Serializer."""
@@ -121,11 +132,30 @@ class EventCreateUpdateSerializer(serializers.ModelSerializer):
 
     cover = serializers.ImageField(required=False)
 
+    geom = serializers.JSONField()
+
+    def validate(self: "EventCreateUpdateSerializer", data: Dict) -> Dict:
+        """Extra validation."""
+        try:
+            GeoLocation(geom=data["geom"])
+        except Exception:
+            raise exceptions.ParseError("geom field should be json")
+
+        return data
+
     class Meta:
         """Meta data."""
 
         model = Event
-        fields = ("title", "description", "cover", "total_guest", "event_date", "tags")
+        fields = (
+            "title",
+            "description",
+            "cover",
+            "total_guest",
+            "event_date",
+            "tags",
+            "geom",
+        )
 
 
 class SessionRetrieveCreateUpdateSerializer(serializers.ModelSerializer):

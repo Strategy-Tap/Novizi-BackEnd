@@ -59,6 +59,8 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth.registration",
     "dj_rest_auth",
     "rest_framework_simplejwt.token_blacklist",
+    "djgeojson",
+    "leaflet",
 ]
 
 LOCAL_APPS = ["users.apps.UsersConfig", "events.apps.EventsConfig"]
@@ -344,7 +346,7 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 LOGOUT_ON_PASSWORD_CHANGE = True
 
-JWT_AUTH_COOKIE = 'JWT_AUTH_COOKIE'
+JWT_AUTH_COOKIE = "JWT_AUTH_COOKIE"
 
 # Your settings...
 # ------------------------------------------------------------------------------

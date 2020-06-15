@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from djgeojson.fields import PointField
 
 from .utils import get_read_time, unique_slug
 
@@ -89,6 +90,8 @@ class Event(models.Model):
     created_at = models.DateTimeField(verbose_name=_("created at"), auto_now_add=True)
 
     updated_at = models.DateTimeField(verbose_name=_("updated at"), auto_now=True)
+
+    geom = PointField(verbose_name=_("geo location"))
 
     class Meta:
         """Meta data."""
