@@ -4,6 +4,26 @@ from typing import Any, Dict
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 
+from .models import CustomUser
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    """Profile serializer."""
+
+    username = serializers.CharField(required=False)
+
+    email = serializers.EmailField(required=False)
+
+    full_name = serializers.CharField(required=False)
+
+    picture = serializers.ImageField(required=False)
+
+    class Meta:
+        """Meta data."""
+
+        model = CustomUser
+        fields = ("username", "email", "full_name", "picture")
+
 
 class UserDetailsSerializer(serializers.Serializer):
     """User detail serializer."""
