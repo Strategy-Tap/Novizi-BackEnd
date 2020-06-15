@@ -1,0 +1,91 @@
+### Register a user
+POST http://127.0.0.1:8000/api/users/register/
+Content-Type: application/json
+
+{
+  "username": "stringzzzzzzz",
+  "email": "stringzzzzzzz@example.com",
+  "password1": "1234567899mnm",
+  "password2": "1234567899mnm",
+  "full_name": "stringzzzzzzz"
+}
+
+> {% function res() {
+    client.global.set("access_token", response.body.access_token);
+  client.global.set("refresh_token", response.body.refresh_token);
+} res()%}
+
+
+### Login with username
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
+
+{
+    "username": "novizi",
+    "password": "1234567899mnm"
+}
+
+> {% function res() {
+    client.global.set("access_token", response.body.access_token);
+  client.global.set("refresh_token", response.body.refresh_token);
+} res()%}
+
+
+### Login with email
+POST http://127.0.0.1:8000/api/users/login/
+Content-Type: application/json
+
+{
+    "email": "novizi@novizi.com",
+    "password": "1234567899mnm"
+}
+
+> {% function res() {
+    client.global.set("access_token", response.body.access_token);
+  client.global.set("refresh_token", response.body.refresh_token);
+} res()%}
+
+
+### Access Token verify
+POST http://127.0.0.1:8000/api/users/token/verify/
+Content-Type: application/json
+
+{
+    "token": "{{access_token}}"
+}
+
+
+### Refresh the acces token
+POST http://127.0.0.1:8000/api/users/token/refresh/
+Content-Type: application/json
+
+{
+    "refresh": "{{refresh_token}}"
+}
+
+> {% client.global.set("access_token", response.body.access); %}
+
+
+### Get user info
+GET http://127.0.0.1:8000/api/users/user/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+
+
+### Change user password
+POST http://127.0.0.1:8000/api/users/password/change/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "old_password": "1234567899mnm",
+  "new_password1": "1234567899mnm",
+  "new_password2": "1234567899mnm"
+}
+
+
+### Logout
+POST http://127.0.0.1:8000/api/users/logout/
+Authorization: Bearer {{access_token}}
+
