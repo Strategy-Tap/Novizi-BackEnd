@@ -46,6 +46,19 @@ def sign_up_to_event(request: Request, slug: str) -> Response:
     return Response(status=status.HTTP_201_CREATED)
 
 
+@api_view(["GET"])
+def old_event_list(request: Request) -> Response:
+    """Get list of old events."""
+    events = (
+        Event.objects.select_related("hosted_by")
+        .prefetch_related("tags")
+        .filter(event_date__lt=timezone.now())
+    )
+
+    serializer = serializers.EventListSerializer(events, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class EventListCreateAPIView(generics.ListCreateAPIView):
     """Event API view for create and list."""
 

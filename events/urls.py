@@ -12,6 +12,7 @@ from .views import (
     SessionRetrieveAPIView,
     attendee_list,
     list_of_tag,
+    old_event_list,
     sign_up_to_event,
     speakers_list,
 )
@@ -21,6 +22,7 @@ app_name = "events"
 urlpatterns = [
     path("tags/", list_of_tag),
     path("", EventListCreateAPIView.as_view()),
+    path("old/", old_event_list),
     path("<slug>/signup/", sign_up_to_event),
     path("<event_slug>/attendees/", attendee_list),
     path("<event_slug>/speakers/", speakers_list),
