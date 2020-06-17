@@ -13,7 +13,7 @@ class GeoLocation(BaseModel):
     geom: Dict
 
 
-class ProfileSerializer(serializers.Serializer):
+class ProfilesSerializer(serializers.Serializer):
     """Serializer to get username and picture of owner of the event."""
 
     username = serializers.CharField(read_only=True)
@@ -24,13 +24,13 @@ class ProfileSerializer(serializers.Serializer):
 class AttendeeSerializer(serializers.Serializer):
     """Serializer For attendees."""
 
-    user = ProfileSerializer(read_only=True)
+    user = ProfilesSerializer(read_only=True)
 
 
 class SpeakerSerializer(serializers.Serializer):
     """Serializer For attendees."""
 
-    proposed_by = ProfileSerializer(read_only=True)
+    proposed_by = ProfilesSerializer(read_only=True)
 
 
 class TagSerializer(serializers.Serializer):
@@ -74,7 +74,7 @@ class EventListSerializer(serializers.Serializer):
 
     cover = serializers.ImageField(read_only=True)
 
-    hosted_by = ProfileSerializer(read_only=True)
+    hosted_by = ProfilesSerializer(read_only=True)
 
     tags = serializers.StringRelatedField(read_only=True, many=True)
 
@@ -92,13 +92,13 @@ class EventRetrieveSerializer(serializers.Serializer):
 
     total_guest = serializers.IntegerField(read_only=True)
 
-    hosted_by = ProfileSerializer(read_only=True)
+    hosted_by = ProfilesSerializer(read_only=True)
 
     cover = serializers.ImageField(read_only=True)
 
     tags = serializers.StringRelatedField(read_only=True, many=True)
 
-    organizers = ProfileSerializer(read_only=True, many=True)
+    organizers = ProfilesSerializer(read_only=True, many=True)
 
     total_attendees = serializers.IntegerField(read_only=True)
 
@@ -162,7 +162,7 @@ class SessionRetrieveCreateUpdateSerializer(serializers.ModelSerializer):
     """Session Retrieve Create Update Serializer."""
 
     status = serializers.CharField(read_only=True)
-    proposed_by = ProfileSerializer(read_only=True)
+    proposed_by = ProfilesSerializer(read_only=True)
 
     class Meta:
         """Meta data."""
@@ -180,4 +180,4 @@ class SessionListSerializer(serializers.Serializer):
 
     slug = serializers.SlugField(read_only=True)
 
-    proposed_by = ProfileSerializer(read_only=True)
+    proposed_by = ProfilesSerializer(read_only=True)
