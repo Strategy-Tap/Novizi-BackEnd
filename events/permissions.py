@@ -1,6 +1,7 @@
 """Collection permissions."""
 from typing import Any
 
+from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.request import Request
 
@@ -24,7 +25,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.hosted_by == request.user
+        return obj.hosted_by == request.user and obj.event_date > timezone.now()
 
 
 class IsProposerOrReadOnly(permissions.BasePermission):
