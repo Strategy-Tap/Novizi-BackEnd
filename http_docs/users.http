@@ -3,11 +3,11 @@ POST http://127.0.0.1:8000/api/users/register/
 Content-Type: application/json
 
 {
-  "username": "stringzzzzzzz",
-  "email": "stringzzzzzzz@example.com",
-  "password1": "1234567899mnm",
-  "password2": "1234567899mnm",
-  "full_name": "stringzzzzzzz",
+  "username": "novizi",
+  "email": "novizi@novizi.com",
+  "password1": "1234567899novizi",
+  "password2": "1234567899novizi",
+  "full_name": "novizi",
   "phone_number": "1234567899"
 }
 
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 {
     "username": "novizi",
-    "password": "1234567899mnm"
+    "password": "1234567899novizi"
 }
 
 > {% function res() {
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 {
     "email": "novizi@novizi.com",
-    "password": "1234567899mnm"
+    "password": "1234567899novizi"
 }
 
 > {% function res() {
@@ -80,9 +80,9 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-  "old_password": "1234567899mnm",
-  "new_password1": "1234567899mnm",
-  "new_password2": "1234567899mnm"
+  "old_password": "1234567899novizi",
+  "new_password1": "1234567899novizi",
+  "new_password2": "1234567899novizi"
 }
 
 
