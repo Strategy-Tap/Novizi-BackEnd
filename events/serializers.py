@@ -186,7 +186,7 @@ class SessionListSerializer(serializers.Serializer):
 class SessionSettingSerializer(serializers.Serializer):
     """Session Setting Serializer."""
 
-    session_type = serializers.ChoiceField(("Accepted", "Draft", "Denied"))
+    status = serializers.ChoiceField(("Accepted", "Draft", "Denied"))
 
 
 class AttendeeSettingSerializer(serializers.Serializer):

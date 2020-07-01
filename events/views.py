@@ -307,7 +307,7 @@ def session_settings(request: Request, event_slug: str, slug: str) -> Response:
         slug: The session slug
 
     Examples:
-        {"session_type": "Accepted"}
+        {"status": "Accepted"}
 
     Returns:
         Response: Json response.
@@ -317,15 +317,15 @@ def session_settings(request: Request, event_slug: str, slug: str) -> Response:
     """
     event = get_object_or_404(Event, slug=event_slug)
     if event.hosted_by == request.user and event.event_date > timezone.now():
-        session = get_object_or_404(Session, slug=slug)
+        session = event.sessions.filter(slug=slug).first()
 
         serializer = serializers.SessionSettingSerializer(data=request.data)
 
-        if serializer.is_valid(raise_exception=True):
-            session.status = serializer.data.get("session_type")
+        if serializer.is_valid(raise_exception=True) and session:
+            session.status = serializer.data.get("status")
             session.save()
             return Response(
-                {"detail": f"{session} has been {serializer.data.get('session_type')}"},
+                {"detail": f"{session} has been {serializer.data.get('status')}"},
                 status=status.HTTP_200_OK,
             )
 
