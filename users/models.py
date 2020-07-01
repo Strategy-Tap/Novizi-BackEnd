@@ -47,3 +47,24 @@ class CustomUser(AbstractUser):
     def __str__(self: "CustomUser") -> str:
         """It return readable name for the model."""
         return f"{self.username}"
+
+    def total_attended_events(self: "CustomUser") -> int:
+        """Getting total of attended events for a user."""
+        return self.attendees.filter(has_attended=True).count()
+
+    def total_hosted_events(self: "CustomUser") -> int:
+        """Getting total of hosted events for a user."""
+        return self.events.all().count()
+
+    def total_organized_events(self: "CustomUser") -> int:
+        """Getting total of organized events for a user."""
+        return self.events_organizers.all().count()
+
+    def total_accepted_sessions(self: "CustomUser") -> int:
+        """Getting total of accepted sessions for a user."""
+        return self.sessions.filter(status="Accepted").count()
+
+    total_attended_events.short_description = _("Attended Events")
+    total_hosted_events.short_description = _("Hosted Events")
+    total_organized_events.short_description = _("Organized Events")
+    total_accepted_sessions.short_description = _("Accepted Sessions")

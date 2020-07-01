@@ -20,11 +20,25 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     picture = serializers.ImageField(required=False)
 
+    total_attended_events = serializers.IntegerField(read_only=True)
+    total_hosted_events = serializers.IntegerField(read_only=True)
+    total_organized_events = serializers.IntegerField(read_only=True)
+    total_accepted_sessions = serializers.IntegerField(read_only=True)
+
     class Meta:
         """Meta data."""
 
         model = CustomUser
-        fields = ("username", "email", "full_name", "picture")
+        fields = (
+            "username",
+            "email",
+            "full_name",
+            "picture",
+            "total_attended_events",
+            "total_hosted_events",
+            "total_organized_events",
+            "total_accepted_sessions",
+        )
 
 
 class UserDetailsSerializer(serializers.Serializer):

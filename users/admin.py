@@ -72,6 +72,10 @@ class CustomUserAdmin(ExportActionModelAdmin, UserAdmin):
         "username",
         "email",
         "is_active",
+        "total_hosted_events",
+        "total_organized_events",
+        "total_attended_events",
+        "total_accepted_sessions",
     )
 
     list_filter = ("last_login",)
