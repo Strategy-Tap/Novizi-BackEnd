@@ -1,6 +1,7 @@
 """Collection views."""
 from typing import Any, Dict, List, Tuple
 
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import exceptions, generics, permissions, status
@@ -293,3 +294,122 @@ def speakers_list(request: Request, event_slug: str) -> Response:
     sessions = event.sessions.filter(status="Accepted")
     serializer = serializers.SpeakerSerializer(sessions, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def session_settings(request: Request, event_slug: str, slug: str) -> Response:
+    """Settings for a session to Accepted or Draft or Denied.
+
+    Args:
+        request: Request object
+        event_slug: The event slug.
+        slug: The session slug
+
+    Examples:
+        {"session_type": "Accepted"}
+
+    Returns:
+        Response: Json response.
+        200: if everything is correct.
+        404: if the event or the session doesn't exists,
+        and if user don't have permission.
+    """
+    event = get_object_or_404(Event, slug=event_slug)
+    if event.hosted_by == request.user and event.event_date > timezone.now():
+        session = get_object_or_404(Session, slug=slug)
+
+        serializer = serializers.SessionSettingSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            session.status = serializer.data.get("session_type")
+            session.save()
+            return Response(
+                {"detail": f"{session} has been {serializer.data.get('session_type')}"},
+                status=status.HTTP_200_OK,
+            )
+
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def attendee_settings(request: Request, event_slug: str) -> Response:
+    """Settings for a attendee to check if they attended the event or not.
+
+    Args:
+        request: Request object
+        event_slug: The event slug.
+
+    Examples:
+        {"list_of_username": ["novizi", "novizi2"]}
+
+    Returns:
+        Response: Json response.
+        200: if everything is correct.
+        404: if the event or user doesn't exists
+        and if user don't have permission.
+    """
+    event = get_object_or_404(Event, slug=event_slug)
+
+    if (
+        event.hosted_by == request.user
+        or event.organizers.filter(username=request.user).first()
+        and event.event_date > timezone.now()
+    ):
+
+        serializer = serializers.AttendeeSettingSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+
+            for username in serializer.data.get("list_of_username"):
+                user = get_object_or_404(get_user_model(), username=username)
+                attendee = event.attendees.filter(user=user).first()
+
+                if attendee:
+                    attendee.has_attended = True
+                    attendee.save()
+
+            return Response(status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def event_organizers_settings(request: Request, event_slug: str) -> Response:
+    """Settings for a organizers to to Add or Remove organizer.
+
+    Args:
+        request: Request object
+        event_slug: The event slug.
+
+    Examples:
+        {"list_of_username": ["novizi"], "action": "Add"}
+
+    Returns:
+        Response: Json response.
+        200: if everything is correct.
+        404: if the event or user doesn't exists
+        and if user don't have permission.
+    """
+    event = get_object_or_404(Event, slug=event_slug)
+
+    if event.hosted_by == request.user and event.event_date > timezone.now():
+
+        serializer = serializers.OrganizersSettingSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+
+            for username in serializer.data.get("list_of_username"):
+                user = get_object_or_404(get_user_model(), username=username)
+
+                if serializer.data.get("action") == "Add":
+                    event.organizers.add(user)
+
+                if serializer.data.get("action") == "Remove":
+                    event.organizers.remove(user)
+
+            return Response(status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_404_NOT_FOUND)

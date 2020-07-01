@@ -181,3 +181,23 @@ class SessionListSerializer(serializers.Serializer):
     slug = serializers.SlugField(read_only=True)
 
     proposed_by = ProfilesSerializer(read_only=True)
+
+
+class SessionSettingSerializer(serializers.Serializer):
+    """Session Setting Serializer."""
+
+    session_type = serializers.ChoiceField(("Accepted", "Draft", "Denied"))
+
+
+class AttendeeSettingSerializer(serializers.Serializer):
+    """Attendee Setting Serializer."""
+
+    list_of_username = serializers.ListField()
+
+
+class OrganizersSettingSerializer(serializers.Serializer):
+    """Organizers Setting Serializer."""
+
+    list_of_username = serializers.ListField()
+
+    action = serializers.ChoiceField(("Add", "Remove"))

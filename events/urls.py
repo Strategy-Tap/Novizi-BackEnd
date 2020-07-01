@@ -11,8 +11,11 @@ from .views import (
     SessionListAPIView,
     SessionRetrieveAPIView,
     attendee_list,
+    attendee_settings,
+    event_organizers_settings,
     list_of_tag,
     old_event_list,
+    session_settings,
     sign_up_to_event,
     speakers_list,
 )
@@ -35,5 +38,8 @@ urlpatterns = [
         "<event_slug>/proposers/<slug>/",
         ProposerRetrieveUpdateDestroyAPIView.as_view(),
     ),
+    path("<event_slug>/settings/attendee/", attendee_settings),
+    path("<event_slug>/settings/organizers/", event_organizers_settings),
+    path("<event_slug>/settings/session/<slug>/", session_settings),
     path("<slug>/", EventRetrieveUpdateDestroyAPIView.as_view()),
 ]
